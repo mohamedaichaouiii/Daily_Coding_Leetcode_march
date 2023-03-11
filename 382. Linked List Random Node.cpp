@@ -36,3 +36,16 @@ public:
  * Solution* obj = new Solution(head);
  * int param_1 = obj->getRandom();
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
