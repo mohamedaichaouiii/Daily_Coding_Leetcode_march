@@ -1,25 +1,42 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution:
-    def buildTree_rec(self, i1, i2, p1, p2):
-        if i1 >= i2 or p1 >= p2:
-            return None
-        root_val = self.postorder[p2-1]
-        root = TreeNode(root_val)
-        it = self.inorder.index(root_val)
-        diff = it - i1
-        root.left = self.buildTree_rec(i1, i1+diff, p1, p1+diff)
-        root.right = self.buildTree_rec(i1+diff+1, i2, p1+diff, p2-1)
-        return root
-    
-    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
-        n = len(inorder)
-        if n == 0:
-            return None
-        self.inorder = inorder
-        self.postorder = postorder
-        return self.buildTree_rec(0, n, 0, n)
+def check_winner(board):
+    # Check rows for a winner
+    for row in board:
+        if row == "XXX":
+            return "Skander wins"
+        elif row == "OOO":
+            return "Amen wins"
+    # Check columns for a winner
+    for j in range(3):
+        column = board[0][j] + board[1][j] + board[2][j]
+        if column == "XXX":
+            return "Skander wins"
+        elif column == "OOO":
+            return "Amen wins"
+    # Check diagonals for a winner
+    diagonal1 = board[0][0] + board[1][1] + board[2][2]
+    diagonal2 = board[0][2] + board[1][1] + board[2][0]
+    if diagonal1 == "XXX" or diagonal2 == "XXX":
+        return "Skander wins"
+    elif diagonal1 == "OOO" or diagonal2 == "OOO":
+        return "Amen wins"
+    # Check if the board is full
+    if "." not in "".join(board):
+        return "Draw"
+    # If none of the above conditions are met, the game is not over
+    return None
+
+def solution(board):
+    # Count the number of Xs and Os on the board
+    num_X = sum(row.count("X") for row in board)
+    num_O = sum(row.count("O") for row in board)
+    # Check if the game is over
+    winner = check_winner(board)
+    if winner is not None:
+        return winner
+    # Determine whose turn it is
+    if num_X == num_O:
+        return "Skander to play"
+    elif num_X == num_O + 1:
+        return "Amen to play"
+    else:
+        return "Invalid board configuration"
